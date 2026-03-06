@@ -22,6 +22,8 @@ export interface ChatWidgetProps {
   accentColor?: string;
   /** Position: "bottom-right" | "bottom-left" (default: "bottom-right") */
   position?: "bottom-right" | "bottom-left";
+  /** Distance from bottom in pixels (default: 24) */
+  bottomOffset?: number;
 }
 
 export interface ChatHandlerOptions {

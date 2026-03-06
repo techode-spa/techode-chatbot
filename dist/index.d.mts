@@ -23,8 +23,10 @@ interface ChatWidgetProps {
     accentColor?: string;
     /** Position: "bottom-right" | "bottom-left" (default: "bottom-right") */
     position?: "bottom-right" | "bottom-left";
+    /** Distance from bottom in pixels (default: 24) */
+    bottomOffset?: number;
 }
 
-declare function ChatWidget({ apiUrl, botName, welcomeMessage, maxMessages, cooldownMs, maxLength, theme, accentColor, position, }: ChatWidgetProps): react_jsx_runtime.JSX.Element;
+declare function ChatWidget({ apiUrl, botName, welcomeMessage, maxMessages, cooldownMs, maxLength, theme, accentColor, position, bottomOffset, }: ChatWidgetProps): react_jsx_runtime.JSX.Element;
 
 export { type ChatMessage, ChatWidget, type ChatWidgetProps };

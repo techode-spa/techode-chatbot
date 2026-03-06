@@ -13,6 +13,7 @@ export default function ChatWidget({
   theme = "dark",
   accentColor = "#2DBFAD",
   position = "bottom-right",
+  bottomOffset = 24,
 }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -153,6 +154,7 @@ export default function ChatWidget({
         accentColor={accentColor}
         theme={theme}
         position={position}
+        bottomOffset={bottomOffset}
         onSend={sendMessage}
       />
       <ChatButton
@@ -160,6 +162,7 @@ export default function ChatWidget({
         onClick={() => setIsOpen(!isOpen)}
         accentColor={accentColor}
         position={position}
+        bottomOffset={bottomOffset}
       />
     </>
   );

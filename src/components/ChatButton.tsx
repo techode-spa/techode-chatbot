@@ -5,16 +5,17 @@ interface ChatButtonProps {
   onClick: () => void;
   accentColor: string;
   position: "bottom-right" | "bottom-left";
+  bottomOffset: number;
 }
 
-export default function ChatButton({ isOpen, onClick, accentColor, position }: ChatButtonProps) {
+export default function ChatButton({ isOpen, onClick, accentColor, position, bottomOffset }: ChatButtonProps) {
   return (
     <button
       onClick={onClick}
       aria-label={isOpen ? "Close chat" : "Open chat"}
       style={{
         position: "fixed",
-        bottom: "80px",
+        bottom: `${bottomOffset}px`,
         ...(position === "bottom-right" ? { right: "24px" } : { left: "24px" }),
         width: "56px",
         height: "56px",

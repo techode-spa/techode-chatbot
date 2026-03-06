@@ -5,7 +5,7 @@ import { useState as useState2, useCallback } from "react";
 
 // src/components/ChatButton.tsx
 import { jsx, jsxs } from "react/jsx-runtime";
-function ChatButton({ isOpen, onClick, accentColor, position }) {
+function ChatButton({ isOpen, onClick, accentColor, position, bottomOffset }) {
   return /* @__PURE__ */ jsxs(
     "button",
     {
@@ -13,7 +13,7 @@ function ChatButton({ isOpen, onClick, accentColor, position }) {
       "aria-label": isOpen ? "Close chat" : "Open chat",
       style: {
         position: "fixed",
-        bottom: "80px",
+        bottom: `${bottomOffset}px`,
         ...position === "bottom-right" ? { right: "24px" } : { left: "24px" },
         width: "56px",
         height: "56px",
@@ -146,6 +146,7 @@ function ChatPanel({
   accentColor,
   theme,
   position,
+  bottomOffset,
   serverRemaining,
   quotaPeriod,
   onSend
@@ -181,7 +182,7 @@ function ChatPanel({
     {
       style: {
         position: "fixed",
-        bottom: "148px",
+        bottom: `${bottomOffset + 68}px`,
         ...position === "bottom-right" ? { right: "24px" } : { left: "24px" },
         width: "380px",
         maxWidth: "calc(100vw - 48px)",
@@ -437,7 +438,8 @@ function ChatWidget({
   maxLength = 500,
   theme = "dark",
   accentColor = "#2DBFAD",
-  position = "bottom-right"
+  position = "bottom-right",
+  bottomOffset = 24
 }) {
   const [isOpen, setIsOpen] = useState2(false);
   const [messages, setMessages] = useState2([]);
@@ -562,6 +564,7 @@ function ChatWidget({
         accentColor,
         theme,
         position,
+        bottomOffset,
         onSend: sendMessage
       }
     ),
@@ -571,7 +574,8 @@ function ChatWidget({
         isOpen,
         onClick: () => setIsOpen(!isOpen),
         accentColor,
-        position
+        position,
+        bottomOffset
       }
     )
   ] });

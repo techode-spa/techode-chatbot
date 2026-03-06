@@ -15,6 +15,7 @@ interface ChatPanelProps {
   accentColor: string;
   theme: "dark" | "light";
   position: "bottom-right" | "bottom-left";
+  bottomOffset: number;
   serverRemaining: number | null;
   quotaPeriod: "daily" | "weekly" | "unlimited";
   onSend: (message: string) => void;
@@ -33,6 +34,7 @@ export default function ChatPanel({
   accentColor,
   theme,
   position,
+  bottomOffset,
   serverRemaining,
   quotaPeriod,
   onSend,
@@ -75,7 +77,7 @@ export default function ChatPanel({
     <div
       style={{
         position: "fixed",
-        bottom: "148px",
+        bottom: `${bottomOffset + 68}px`,
         ...(position === "bottom-right" ? { right: "24px" } : { left: "24px" }),
         width: "380px",
         maxWidth: "calc(100vw - 48px)",
