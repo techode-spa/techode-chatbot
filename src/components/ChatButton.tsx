@@ -14,7 +14,7 @@ export default function ChatButton({ isOpen, onClick, accentColor, position }: C
       aria-label={isOpen ? "Close chat" : "Open chat"}
       style={{
         position: "fixed",
-        bottom: "24px",
+        bottom: "80px",
         ...(position === "bottom-right" ? { right: "24px" } : { left: "24px" }),
         width: "56px",
         height: "56px",

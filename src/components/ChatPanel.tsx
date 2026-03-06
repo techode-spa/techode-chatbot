@@ -75,7 +75,7 @@ export default function ChatPanel({
     <div
       style={{
         position: "fixed",
-        bottom: "92px",
+        bottom: "148px",
         ...(position === "bottom-right" ? { right: "24px" } : { left: "24px" }),
         width: "380px",
         maxWidth: "calc(100vw - 48px)",

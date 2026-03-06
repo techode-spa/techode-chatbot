@@ -38,7 +38,7 @@ function ChatButton({ isOpen, onClick, accentColor, position }) {
       "aria-label": isOpen ? "Close chat" : "Open chat",
       style: {
         position: "fixed",
-        bottom: "24px",
+        bottom: "80px",
         ...position === "bottom-right" ? { right: "24px" } : { left: "24px" },
         width: "56px",
         height: "56px",
@@ -206,7 +206,7 @@ function ChatPanel({
     {
       style: {
         position: "fixed",
-        bottom: "92px",
+        bottom: "148px",
         ...position === "bottom-right" ? { right: "24px" } : { left: "24px" },
         width: "380px",
         maxWidth: "calc(100vw - 48px)",
