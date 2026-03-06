@@ -129,4 +129,4 @@ import { ChatWidget } from "@techode/chatbot";
 
 ## License
 
-MIT — Built by [Techode](https://techode-website.vercel.app)
+MIT — Built by [Techode](https://techode.dev)
