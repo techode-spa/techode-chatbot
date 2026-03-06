@@ -15,8 +15,9 @@ interface ChatPanelProps {
   accentColor: string;
   theme: "dark" | "light";
   position: "bottom-right" | "bottom-left";
+  serverRemaining: number | null;
+  quotaPeriod: "daily" | "weekly" | "unlimited";
   onSend: (message: string) => void;
-  limitReachedText?: string;
 }
 
 export default function ChatPanel({
@@ -32,6 +33,8 @@ export default function ChatPanel({
   accentColor,
   theme,
   position,
+  serverRemaining,
+  quotaPeriod,
   onSend,
 }: ChatPanelProps) {
   const [input, setInput] = useState("");
@@ -39,8 +42,8 @@ export default function ChatPanel({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const limitReached = messagesUsed >= maxMessages;
-  const remaining = maxMessages - messagesUsed;
+  const limitReached = serverRemaining === 0 || messagesUsed >= maxMessages;
+  const remaining = serverRemaining !== null ? serverRemaining : maxMessages - messagesUsed;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -202,7 +205,11 @@ export default function ChatPanel({
               lineHeight: "1.5",
             }}
           >
-            Has alcanzado el límite de mensajes.
+            {quotaPeriod === "daily"
+              ? "Has alcanzado el límite diario de mensajes."
+              : quotaPeriod === "weekly"
+              ? "Has alcanzado el límite semanal de mensajes."
+              : "Has alcanzado el límite de mensajes."}
             <br />
             Contáctanos por el formulario para seguir la conversación.
           </div>

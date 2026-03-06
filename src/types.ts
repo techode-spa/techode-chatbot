@@ -33,6 +33,10 @@ export interface ChatHandlerOptions {
   maxTokens?: number;
   /** Rate limit: max requests per minute per IP (default: 10) */
   rateLimit?: number;
+  /** Max messages per IP per day (default: 0 = unlimited) */
+  dailyLimit?: number;
+  /** Max messages per IP per week (default: 0 = unlimited) */
+  weeklyLimit?: number;
   /** System prompt string, or path to a .md/.txt file */
   systemPrompt: string;
 }

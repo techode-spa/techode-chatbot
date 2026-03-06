@@ -1,5 +1,5 @@
 import type { ChatHandlerOptions } from "../types";
-import { checkRateLimit } from "./rate-limiter";
+import { checkRateLimit, checkQuota } from "./rate-limiter";
 import { readSystemPrompt } from "./config-reader";
 import { sanitizeInput } from "./sanitize";
 
@@ -24,6 +24,8 @@ export function createChatHandler(options: ChatHandlerOptions) {
     model = "claude-haiku-4-5-20251001",
     maxTokens = 300,
     rateLimit = 10,
+    dailyLimit = 0,
+    weeklyLimit = 0,
     systemPrompt,
   } = options;
 
@@ -32,11 +34,23 @@ export function createChatHandler(options: ChatHandlerOptions) {
   return async function handleChat(params: HandlerParams): Promise<HandlerResult> {
     const { body, ip } = params;
 
-    // Rate limit check
+    // Rate limit check (per minute)
     if (!checkRateLimit(ip, rateLimit)) {
       return {
         status: 429,
         body: { error: "Demasiadas solicitudes. Intenta de nuevo en un momento." },
+      };
+    }
+
+    // Quota check (daily + weekly)
+    const quota = checkQuota(ip, dailyLimit, weeklyLimit);
+    if (!quota.allowed) {
+      const errorMsg = quota.period === "daily"
+        ? "Has alcanzado el límite diario de mensajes."
+        : "Has alcanzado el límite semanal de mensajes.";
+      return {
+        status: 429,
+        body: { error: errorMsg, remaining: 0, period: quota.period },
       };
     }
 
@@ -85,7 +99,7 @@ export function createChatHandler(options: ChatHandlerOptions) {
 
       return {
         status: 200,
-        body: { content },
+        body: { content, remaining: quota.remaining, period: quota.period },
       };
     } catch (err) {
       console.error("[techode-chatbot] Error:", err);

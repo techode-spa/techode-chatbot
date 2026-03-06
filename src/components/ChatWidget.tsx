@@ -18,6 +18,8 @@ export default function ChatWidget({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userMessageCount, setUserMessageCount] = useState(0);
+  const [serverRemaining, setServerRemaining] = useState<number | null>(null);
+  const [quotaPeriod, setQuotaPeriod] = useState<"daily" | "weekly" | "unlimited">("unlimited");
 
   const sendMessage = useCallback(
     async (content: string) => {
@@ -38,7 +40,32 @@ export default function ChatWidget({
         });
 
         if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+          const errorData = await res.json().catch(() => ({}));
+
+          if (res.status === 429) {
+            if (typeof errorData.remaining === "number") {
+              setServerRemaining(0);
+              if (errorData.period) setQuotaPeriod(errorData.period);
+            }
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: "assistant",
+                content: errorData.error || "Has alcanzado el límite. Intenta más tarde.",
+              },
+            ]);
+            return;
+          }
+
+          // Server returned an error with a message (502, 500, etc.)
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "assistant",
+              content: errorData.error || "Hubo un problema al procesar tu mensaje. Puedes contactarnos por el formulario para continuar.",
+            },
+          ]);
+          return;
         }
 
         // Handle streaming response
@@ -84,6 +111,10 @@ export default function ChatWidget({
         } else {
           // Handle JSON response
           const data = await res.json();
+          if (typeof data.remaining === "number" && data.remaining >= 0) {
+            setServerRemaining(data.remaining);
+            if (data.period) setQuotaPeriod(data.period);
+          }
           const assistantMessage: ChatMessage = {
             role: "assistant",
             content: data.content || data.message || "No pude procesar tu mensaje.",
@@ -95,7 +126,7 @@ export default function ChatWidget({
           ...prev,
           {
             role: "assistant",
-            content: "Lo siento, hubo un error. Por favor, inténtalo de nuevo.",
+            content: "No se pudo conectar en este momento. Si necesitas ayuda, contáctanos por el formulario.",
           },
         ]);
       } finally {
@@ -115,8 +146,10 @@ export default function ChatWidget({
         welcomeMessage={welcomeMessage}
         maxLength={maxLength}
         cooldownMs={cooldownMs}
-        maxMessages={maxMessages}
+        maxMessages={serverRemaining !== null ? serverRemaining + userMessageCount : maxMessages}
         messagesUsed={userMessageCount}
+        serverRemaining={serverRemaining}
+        quotaPeriod={quotaPeriod}
         accentColor={accentColor}
         theme={theme}
         position={position}
