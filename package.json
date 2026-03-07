@@ -34,7 +34,24 @@
     "tsup": "^8",
     "typescript": "^5"
   },
+  "keywords": [
+    "chatbot",
+    "chat-widget",
+    "ai-chatbot",
+    "react",
+    "nextjs",
+    "claude",
+    "anthropic",
+    "embeddable",
+    "widget"
+  ],
+  "homepage": "https://github.com/techode-spa/techode-chatbot#readme",
+  "bugs": {
+    "url": "https://github.com/techode-spa/techode-chatbot/issues"
+  },
+  "author": "Techode SpA <contacto@techode.dev> (https://techode.dev)",
   "license": "MIT",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/techode-spa/techode-chatbot"
