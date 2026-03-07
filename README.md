@@ -1,5 +1,9 @@
 # @techode/chatbot
 
+[![npm version](https://img.shields.io/npm/v/@techode/chatbot.svg)](https://www.npmjs.com/package/@techode/chatbot)
+[![npm downloads](https://img.shields.io/npm/dm/@techode/chatbot.svg)](https://www.npmjs.com/package/@techode/chatbot)
+[![license](https://img.shields.io/npm/l/@techode/chatbot.svg)](https://github.com/techode-spa/techode-chatbot/blob/main/LICENSE)
+
 Embeddable AI chatbot widget for React/Next.js projects. Powered by Claude (Anthropic).
 
 ## Features
