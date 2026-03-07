@@ -54,6 +54,6 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/techode-spa/techode-chatbot"
+    "url": "git+https://github.com/techode-spa/techode-chatbot.git"
   }
 }
