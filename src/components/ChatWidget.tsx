@@ -3,6 +3,20 @@ import ChatButton from "./ChatButton";
 import ChatPanel from "./ChatPanel";
 import type { ChatWidgetProps, ChatMessage } from "../types";
 
+const defaultTexts = {
+  placeholder: "Escribe tu mensaje...",
+  limitDaily: "Has alcanzado el límite diario de mensajes.",
+  limitWeekly: "Has alcanzado el límite semanal de mensajes.",
+  limitSession: "Has alcanzado el límite de mensajes.",
+  limitFooter: "Contáctanos por el formulario para seguir la conversación.",
+  remainingSingular: "mensaje restante",
+  remainingPlural: "mensajes restantes",
+  errorRateLimit: "Has alcanzado el límite. Intenta más tarde.",
+  errorServer: "Hubo un problema al procesar tu mensaje. Puedes contactarnos por el formulario para continuar.",
+  errorFallback: "No pude procesar tu mensaje.",
+  errorConnection: "No se pudo conectar en este momento. Si necesitas ayuda, contáctanos por el formulario.",
+};
+
 export default function ChatWidget({
   apiUrl,
   botName = "Asistente",
@@ -14,7 +28,10 @@ export default function ChatWidget({
   accentColor = "#2DBFAD",
   position = "bottom-right",
   bottomOffset = 24,
+  texts: customTexts,
 }: ChatWidgetProps) {
+  const t = { ...defaultTexts, ...customTexts };
+
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +69,7 @@ export default function ChatWidget({
               ...prev,
               {
                 role: "assistant",
-                content: errorData.error || "Has alcanzado el límite. Intenta más tarde.",
+                content: errorData.error || t.errorRateLimit,
               },
             ]);
             return;
@@ -63,7 +80,7 @@ export default function ChatWidget({
             ...prev,
             {
               role: "assistant",
-              content: errorData.error || "Hubo un problema al procesar tu mensaje. Puedes contactarnos por el formulario para continuar.",
+              content: errorData.error || t.errorServer,
             },
           ]);
           return;
@@ -118,7 +135,7 @@ export default function ChatWidget({
           }
           const assistantMessage: ChatMessage = {
             role: "assistant",
-            content: data.content || data.message || "No pude procesar tu mensaje.",
+            content: data.content || data.message || t.errorFallback,
           };
           setMessages((prev) => [...prev, assistantMessage]);
         }
@@ -127,7 +144,7 @@ export default function ChatWidget({
           ...prev,
           {
             role: "assistant",
-            content: "No se pudo conectar en este momento. Si necesitas ayuda, contáctanos por el formulario.",
+            content: t.errorConnection,
           },
         ]);
       } finally {
@@ -156,6 +173,7 @@ export default function ChatWidget({
         position={position}
         bottomOffset={bottomOffset}
         onSend={sendMessage}
+        texts={t}
       />
       <ChatButton
         isOpen={isOpen}

@@ -2,6 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import ChatMessage from "./ChatMessage";
 import type { ChatMessage as ChatMessageType } from "../types";
 
+interface ChatPanelTexts {
+  placeholder: string;
+  limitDaily: string;
+  limitWeekly: string;
+  limitSession: string;
+  limitFooter: string;
+  remainingSingular: string;
+  remainingPlural: string;
+}
+
 interface ChatPanelProps {
   isOpen: boolean;
   messages: ChatMessageType[];
@@ -19,6 +29,7 @@ interface ChatPanelProps {
   serverRemaining: number | null;
   quotaPeriod: "daily" | "weekly" | "unlimited";
   onSend: (message: string) => void;
+  texts: ChatPanelTexts;
 }
 
 export default function ChatPanel({
@@ -38,6 +49,7 @@ export default function ChatPanel({
   serverRemaining,
   quotaPeriod,
   onSend,
+  texts: t,
 }: ChatPanelProps) {
   const [input, setInput] = useState("");
   const [cooldown, setCooldown] = useState(false);
@@ -208,12 +220,12 @@ export default function ChatPanel({
             }}
           >
             {quotaPeriod === "daily"
-              ? "Has alcanzado el límite diario de mensajes."
+              ? t.limitDaily
               : quotaPeriod === "weekly"
-              ? "Has alcanzado el límite semanal de mensajes."
-              : "Has alcanzado el límite de mensajes."}
+              ? t.limitWeekly
+              : t.limitSession}
             <br />
-            Contáctanos por el formulario para seguir la conversación.
+            {t.limitFooter}
           </div>
         ) : (
           <>
@@ -238,7 +250,7 @@ export default function ChatPanel({
                     handleSubmit();
                   }
                 }}
-                placeholder="Escribe tu mensaje..."
+                placeholder={t.placeholder}
                 rows={1}
                 style={{
                   flex: 1,
@@ -298,7 +310,7 @@ export default function ChatPanel({
                   marginTop: "6px",
                 }}
               >
-                {remaining} {remaining === 1 ? "mensaje restante" : "mensajes restantes"}
+                {remaining} {remaining === 1 ? t.remainingSingular : t.remainingPlural}
               </div>
             )}
           </>

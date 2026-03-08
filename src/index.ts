@@ -1,2 +1,2 @@
 export { default as ChatWidget } from "./components/ChatWidget";
-export type { ChatWidgetProps, ChatMessage } from "./types";
+export type { ChatWidgetProps, ChatWidgetTexts, ChatMessage } from "./types";

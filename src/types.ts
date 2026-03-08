@@ -3,6 +3,20 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface ChatWidgetTexts {
+  placeholder?: string;
+  limitDaily?: string;
+  limitWeekly?: string;
+  limitSession?: string;
+  limitFooter?: string;
+  remainingSingular?: string;
+  remainingPlural?: string;
+  errorRateLimit?: string;
+  errorServer?: string;
+  errorFallback?: string;
+  errorConnection?: string;
+}
+
 export interface ChatWidgetProps {
   /** URL of your /api/chat endpoint */
   apiUrl: string;
@@ -24,6 +38,8 @@ export interface ChatWidgetProps {
   position?: "bottom-right" | "bottom-left";
   /** Distance from bottom in pixels (default: 24) */
   bottomOffset?: number;
+  /** Override any default text in the widget */
+  texts?: ChatWidgetTexts;
 }
 
 export interface ChatHandlerOptions {

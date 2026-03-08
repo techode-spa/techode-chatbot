@@ -174,7 +174,8 @@ function ChatPanel({
   bottomOffset,
   serverRemaining,
   quotaPeriod,
-  onSend
+  onSend,
+  texts: t
 }) {
   const [input, setInput] = (0, import_react.useState)("");
   const [cooldown, setCooldown] = (0, import_react.useState)(false);
@@ -339,9 +340,9 @@ function ChatPanel({
                   lineHeight: "1.5"
                 },
                 children: [
-                  quotaPeriod === "daily" ? "Has alcanzado el l\xEDmite diario de mensajes." : quotaPeriod === "weekly" ? "Has alcanzado el l\xEDmite semanal de mensajes." : "Has alcanzado el l\xEDmite de mensajes.",
+                  quotaPeriod === "daily" ? t.limitDaily : quotaPeriod === "weekly" ? t.limitWeekly : t.limitSession,
                   /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("br", {}),
-                  "Cont\xE1ctanos por el formulario para seguir la conversaci\xF3n."
+                  t.limitFooter
                 ]
               }
             ) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
@@ -370,7 +371,7 @@ function ChatPanel({
                             handleSubmit();
                           }
                         },
-                        placeholder: "Escribe tu mensaje...",
+                        placeholder: t.placeholder,
                         rows: 1,
                         style: {
                           flex: 1,
@@ -440,7 +441,7 @@ function ChatPanel({
                   children: [
                     remaining,
                     " ",
-                    remaining === 1 ? "mensaje restante" : "mensajes restantes"
+                    remaining === 1 ? t.remainingSingular : t.remainingPlural
                   ]
                 }
               )
@@ -454,6 +455,19 @@ function ChatPanel({
 
 // src/components/ChatWidget.tsx
 var import_jsx_runtime4 = require("react/jsx-runtime");
+var defaultTexts = {
+  placeholder: "Escribe tu mensaje...",
+  limitDaily: "Has alcanzado el l\xEDmite diario de mensajes.",
+  limitWeekly: "Has alcanzado el l\xEDmite semanal de mensajes.",
+  limitSession: "Has alcanzado el l\xEDmite de mensajes.",
+  limitFooter: "Cont\xE1ctanos por el formulario para seguir la conversaci\xF3n.",
+  remainingSingular: "mensaje restante",
+  remainingPlural: "mensajes restantes",
+  errorRateLimit: "Has alcanzado el l\xEDmite. Intenta m\xE1s tarde.",
+  errorServer: "Hubo un problema al procesar tu mensaje. Puedes contactarnos por el formulario para continuar.",
+  errorFallback: "No pude procesar tu mensaje.",
+  errorConnection: "No se pudo conectar en este momento. Si necesitas ayuda, cont\xE1ctanos por el formulario."
+};
 function ChatWidget({
   apiUrl,
   botName = "Asistente",
@@ -464,8 +478,10 @@ function ChatWidget({
   theme = "dark",
   accentColor = "#2DBFAD",
   position = "bottom-right",
-  bottomOffset = 24
+  bottomOffset = 24,
+  texts: customTexts
 }) {
+  const t = { ...defaultTexts, ...customTexts };
   const [isOpen, setIsOpen] = (0, import_react2.useState)(false);
   const [messages, setMessages] = (0, import_react2.useState)([]);
   const [isLoading, setIsLoading] = (0, import_react2.useState)(false);
@@ -497,7 +513,7 @@ function ChatWidget({
               ...prev,
               {
                 role: "assistant",
-                content: errorData.error || "Has alcanzado el l\xEDmite. Intenta m\xE1s tarde."
+                content: errorData.error || t.errorRateLimit
               }
             ]);
             return;
@@ -506,7 +522,7 @@ function ChatWidget({
             ...prev,
             {
               role: "assistant",
-              content: errorData.error || "Hubo un problema al procesar tu mensaje. Puedes contactarnos por el formulario para continuar."
+              content: errorData.error || t.errorServer
             }
           ]);
           return;
@@ -553,7 +569,7 @@ function ChatWidget({
           }
           const assistantMessage = {
             role: "assistant",
-            content: data.content || data.message || "No pude procesar tu mensaje."
+            content: data.content || data.message || t.errorFallback
           };
           setMessages((prev) => [...prev, assistantMessage]);
         }
@@ -562,7 +578,7 @@ function ChatWidget({
           ...prev,
           {
             role: "assistant",
-            content: "No se pudo conectar en este momento. Si necesitas ayuda, cont\xE1ctanos por el formulario."
+            content: t.errorConnection
           }
         ]);
       } finally {
@@ -590,7 +606,8 @@ function ChatWidget({
         theme,
         position,
         bottomOffset,
-        onSend: sendMessage
+        onSend: sendMessage,
+        texts: t
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(

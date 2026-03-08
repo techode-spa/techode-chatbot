@@ -4,6 +4,19 @@ interface ChatMessage {
     role: "user" | "assistant";
     content: string;
 }
+interface ChatWidgetTexts {
+    placeholder?: string;
+    limitDaily?: string;
+    limitWeekly?: string;
+    limitSession?: string;
+    limitFooter?: string;
+    remainingSingular?: string;
+    remainingPlural?: string;
+    errorRateLimit?: string;
+    errorServer?: string;
+    errorFallback?: string;
+    errorConnection?: string;
+}
 interface ChatWidgetProps {
     /** URL of your /api/chat endpoint */
     apiUrl: string;
@@ -25,8 +38,10 @@ interface ChatWidgetProps {
     position?: "bottom-right" | "bottom-left";
     /** Distance from bottom in pixels (default: 24) */
     bottomOffset?: number;
+    /** Override any default text in the widget */
+    texts?: ChatWidgetTexts;
 }
 
-declare function ChatWidget({ apiUrl, botName, welcomeMessage, maxMessages, cooldownMs, maxLength, theme, accentColor, position, bottomOffset, }: ChatWidgetProps): react_jsx_runtime.JSX.Element;
+declare function ChatWidget({ apiUrl, botName, welcomeMessage, maxMessages, cooldownMs, maxLength, theme, accentColor, position, bottomOffset, texts: customTexts, }: ChatWidgetProps): react_jsx_runtime.JSX.Element;
 
-export { type ChatMessage, ChatWidget, type ChatWidgetProps };
+export { type ChatMessage, ChatWidget, type ChatWidgetProps, type ChatWidgetTexts };
