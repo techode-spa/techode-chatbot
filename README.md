@@ -31,7 +31,9 @@ npm install github:techode-spa/techode-chatbot
 
 ### 1. Create your system prompt file
 
-Create `chatbot.config.md` in your project root:
+Create `chatbot.config.md` in your project root. See [`chatbot.config.example.md`](./chatbot.config.example.md) for a complete template with all recommended sections.
+
+Quick example:
 
 ```md
 # Your Company Assistant
