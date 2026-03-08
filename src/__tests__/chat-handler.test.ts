@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createChatHandler } from "../api/chat-handler";
 
+// Silence console.error during tests (expected error logs from handler)
+vi.spyOn(console, "error").mockImplementation(() => {});
+
 // Mock rate limiter
 vi.mock("../api/rate-limiter", () => ({
   checkRateLimit: vi.fn(() => true),
